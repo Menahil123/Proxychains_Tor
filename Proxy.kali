@@ -1,0 +1,34 @@
+#INSTALLATION OF PROXYCHAIN_TOR.....
+sudo apt update && sudo apt full-upgrade -y
+
+sudo apt install tor proxychains4 -y
+proxychains4 is already the newest version (4.17-3).
+
+#CONFIGURING THE TOR.....
+The Tor service runs in the background and provides a SOCKS proxy on port 9050.
+Start the Tor service and enable it to run at boot:
+sudo systemctl start tor
+sudo systemctl enable tor
+sudo systemctl status tor
+                      
+#CONFIGURING PROXYCHAINS.........
+#open the configuration file with the text editor
+sudo nano /etc/proxychains4.conf
+
+#RECOMMENDED SETTINGS IN THE FILE........
+dynamic_chain (default): This is a good balance of anonymity and performance. Each connection will use a different circuit of Tor nodes.
+
+strict_chain: All connections use the same circuit of Tor nodes in order. Less anonymous but can be more reliable for some tasks.
+
+random_chain: Randomly chooses proxies from the list. The most anonymous but potentially the slowest.
+
+Leave dynamic_chain as the default.
+
+Save the file and exit (Ctrl+X, then Y, then Enter).
+
+#TESTING THE CONFIGURATION........
+Find your real public IP address. Open Firefox (normally, without proxychains) and go to https://icanhazip.com. Note down the IP address. This is your real IP.
+
+Test your anonymous IP. In your terminal, use curl with proxychains to see what IP address the outside world sees when you use Tor:
+proxychains curl -s https://icanhazip.com
+         
